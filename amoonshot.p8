@@ -536,23 +536,35 @@ end
 pu={
  s=197,--normal sprite
  p=195,--placed sprite
+ e=0,--effort
+ x=0,--effort application x
+ y=0,--/y
 }
 
 function try_push()
  local c=fig_cast(1,3)
- if(c==nil)return
+ if(c==nil)return false
+ --expend effort
+ if(c.x==pu.x and c.y==pu.y)then
+  pu.e+=1
+ else
+  pu.e,pu.x,pu.y=1,c.x,c.y
+ end
+ if(pu.e<16)return false
+ --do push
  local x,y=c.x,c.y
  if(fg.d==1)x-=8
  if(fg.d==2)x+=8
  if(fg.d==3)y-=8
  if(fg.d==4)y+=8
  --blocked
- if(fget(mgetp(x,y),0))return
+ if(fget(mgetp(x,y),0))return false
  local m=pu.s
  --placed 
  if(fget(mgetp(x,y),2))m=pu.p
  msetp(c.x,c.y,c.m+1) 
  msetp(x,y,m)
+ return true
 end
 -->8
 --cut grass behaviour
