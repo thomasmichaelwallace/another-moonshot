@@ -428,6 +428,7 @@ function _update_fig()
  --collide
  if(m)then
   try_push()
+  try_collect()
   m=move_fig()
  end
  --scroll
@@ -539,7 +540,17 @@ end
 
 sw={
  s=211,--cut sprite
+ n=0,--count
 }
+
+function try_collect()
+ local x,y=fg.x+4,fg.y+4
+ local m=mgetp(x,y)
+ if(not fget(m,5))return false
+ msetp(x,y,sw.s)
+ sw.n+=1
+ return true
+end
 
 function try_cut()
  printh("cut!")
