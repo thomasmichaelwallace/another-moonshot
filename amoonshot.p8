@@ -79,7 +79,10 @@ mp={--map state
 --n:sprite tile no
 --sx/y:screen x/y
 function mapn(n,sx,sy)
- if(rb.c~=nil)palt(rb.c,true)
+ if(rb.c~=nil)then
+  --only affected
+  if(n==8 or n==15)palt(rb.c,true)
+ end
  local y=0
  if(n>7)then
   y=16
