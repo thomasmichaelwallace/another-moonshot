@@ -22,8 +22,7 @@ __lua__
 --7:is swing hook
 
 function _init()
- printh("_init")
- --_init_tit()
+ _init_tit()
 end
 
 function _update60()
@@ -63,7 +62,7 @@ end
 --map system
 
 mp={--map state
- n=13,--ok:10,--map no.
+ n=10,--map no.
  x=0,--screen top-left x
  y=0,-- /y
  s={--scroll
@@ -415,8 +414,7 @@ end
 --figure system
 
 fg={--figure state
- --ok:x=80,y=104,--screen x/y
- x=100,y=120, 
+ x=80,y=104,--screen x/y 
  a={--animation sprites
 	 --⬅️➡️⬆️⬇️
 	 -- - still-move-flip?
@@ -888,7 +886,7 @@ tx={--text resources
   c=8,
   t="let us go.",
   o={{t="sure",f=function()
-   fd.m=true
+   _init_end()
   end}},
  }
 }
@@ -1250,13 +1248,12 @@ tl={
  c=-15,--exposion size
  m=true,--first screen
  i=0,--sequence
- a={201,202,201,203,201,204,204}
+ a={201,202,201,203,201,204,204},
 }
 
-function _init_tit()
- tl.v=true
- local c={13,6,7}
+function init_stars()
  local s=flr(rnd(3)+1)
+ local c={13,6,7}
  for i=1,64 do
   add(tl.r,{
    x=rnd(128),
@@ -1265,6 +1262,32 @@ function _init_tit()
    s=s,
    z=1,
   })
+ end
+end
+
+function _init_tit()
+ tl.v=true
+ if(#tl.r==0)init_stars()
+end
+
+function update_world()
+ for s in all(tl.r) do
+  if(s.y>(128-tl.h))then
+   s.c=7
+   s.x-=s.s/3
+   s.z=s.s*2
+   if(s.y>128-tl.h+80)then
+    s.c=11
+    s.z=s.s*3
+   end
+  else
+   s.x-=s.s
+   s.z=1
+  end
+  if(s.x<0)then
+   s.x=128
+   s.s=flr(rnd(3)+1)
+  end
  end
 end
 
@@ -1282,6 +1305,8 @@ function update_fall_movie()
    tl.f=true
    tl.s=199
   end
+ else
+  tl.x+=0.1
  end
 
  tl.t+=1
@@ -1298,38 +1323,18 @@ function update_fall_movie()
 	 
 	 if(tl.f)tl.h+=1
  end 
- --stars
- for s in all(tl.r) do
-  if(s.y>(128-tl.h))then
-   s.c=7
-   s.x-=s.s/3
-   s.z=s.s*2
-   if(s.y>128-tl.h+80)then
-    s.c=11
-    s.z=s.s*3
-   end
-  else
-   s.x-=s.s
-  end
-  if(s.x<0)then
-   s.x=128
-   s.s=flr(rnd(3)+1)
-  end
- end
+ 
+ update_world()
 end
 
-function draw_fall_movie()
- if(tl.f)then
-  --enter horizon
-  local h=tl.h
-  local d=15
-  rectfill(0,128-h   ,128,128-h+15,1 )
-  rectfill(0,128-h+15,128,128-h+20,7 )
-  rectfill(0,128-h+20,128,128-h+80,12)
-  rectfill(0,128-h+80,128,128     ,3 )
-  tl.x+=0.1
- end
-
+function draw_world()
+ local h=tl.h
+ --world
+ rectfill(0,128-h   ,128,128-h+15,1 )
+ rectfill(0,128-h+15,128,128-h+20,7 )
+ rectfill(0,128-h+20,128,128-h+80,12)
+ rectfill(0,128-h+80,128,128     ,3 )
+ --stars/clouds/trees
  for s in all(tl.r) do
   if(s.z==1)then
    pset(s.x,s.y,s.c)
@@ -1337,10 +1342,13 @@ function draw_fall_movie()
    ovalfill(s.x,s.y,s.x+s.z*2,s.y+s.z,s.c)
   end
  end
+end
 
+function draw_fall_movie()
+ draw_world()
+ 
  print(" another",48,28-tl.h,8)
  print("\nmoonshot.",10)
-  
  if(not tl.f)then
   print("press 🅾️/❎ to start",26,100,6)
   print("@thomasmichaelwallace",42,120,5)
@@ -1456,16 +1464,54 @@ end
 --final dungeon
 
 fd={
- o=true,--open
- m=false,
+ o=false,--open
+ m=false,--movie
+ e=false,--end mode
 }
 
-function _update_end()
+function _init_end()
+ fd.m=true
+ tl.h=150
+ tl.s=200
+ tl.x=-8
+ tl.y=120
+ if(#tl.r==0)init_stars()
+end
 
+function _update_end()
+ tl.t+=1
+ if(tl.t>4)then
+  tl.t=0
+  --roll backdrop
+  if(not tl.e and tl.h>0)tl.h-=1
+	 --bump ship
+		tl.x+=rnd(2)-1
+		tl.y+=rnd(2)-1
+	end
+	if(not tl.e)then
+		if(tl.x<60)tl.x+=0.3
+	 if(tl.y>60)tl.y-=0.2
+		tl.x=min(tl.x,70)
+		tl.y=max(tl.y,60)
+		if(tl.h<=0)tl.e=true
+	else
+	 tl.x=mid(50,tl.x,70)
+	 tl.y=mid(50,tl.y,70)
+	end
+	
+ update_world()
 end
 
 function _draw_end()
- print("end")
+ draw_world()
+ spr(tl.s,tl.x,tl.y)
+ 
+ if(tl.e)then
+  print(" another",48,28-tl.h,8)
+  print("\nmoonshot.",10)
+  print("thanks for playing웃",26,100,9)
+  print("@thomasmichaelwallace",42,120,5)
+ end
 end
 __gfx__
 0000000008888880099999900aaaaaa00bbbbbb00cccccc00eeeeee0566666650777777000b33b003b003b033bb0b30002222220022222222222222222222220
