@@ -22,7 +22,7 @@ __lua__
 --7:is swing hook
 
 function _init()
- _init_tit()
+ --ok:_init_tit()
 end
 
 function _update60()
@@ -479,7 +479,7 @@ function fig_cast(l,f)
 end
 
 function move_fig()
- local s=1/3--speed
+ local s=1--ok:1/3--speed
  local m=fig_cast(s,0)
  --workaround 7 south block
  if(mp.n==7 and fg.y>120 and fg.d==4)m=nil
@@ -670,17 +670,20 @@ tx={--text resources
   end
   return {c=5,t=t}
  end,
- [180]={
-  c=8,
-  t="got item",
-  o={{
-   t="woot.",
-   f=function()
-    hk.c=true
-    mset(20,14,32)
-   end
-  }},
- },
+ [180]=function()
+  sfx(12)
+  return {
+	  c=8,
+	  t="got item",
+	  o={{
+	   t="woot.",
+	   f=function()
+	    hk.c=true
+	    mset(20,14,32)
+	   end
+	  }},
+  }
+ end,
  
  --looker
  [150]=function()--lk red tool
@@ -689,12 +692,14 @@ tx={--text resources
   if(lk.h.b)then--swaping
    lk.h.b=false
    lk.p.b=true
+   sfx(12)
    mset(36,10,134)
    return{
     c=8,
     t="put blue where red is and swap."
    }
   else--first time
+   sfx(12)
 	  mset(36,10,152)
 	  return {
 	   c=8,
@@ -713,6 +718,7 @@ tx={--text resources
   elseif(lk.h.b)then
    lk.h.b=false
    lk.p.b=true
+   sfx(12)
    mset(36,10,134)
    return {
     c=8,
@@ -724,12 +730,14 @@ tx={--text resources
  end,
  [243]=function()--lk red
   if(lk.h.r)then
+   sfx(13)
    return {
     c=6,
     t="you stole my red tool!",
     o={tc.rs}
    }
   elseif(lk.h.b)then
+   sfx(13)
    return {
     c=6,
     t="get that blue tool away!",
@@ -757,12 +765,14 @@ tx={--text resources
   if(lk.h.r)then--swaping
    lk.h.r=false
    lk.p.r=true
+   sfx(12)
    mset(125,2,150)
    return {
     c=8,
     t="put down the red tool and swap it for blue!"
    }
   else--first time
+   sfx(12)
    mset(125,2,136)
 	  return {
 	   c=8,
@@ -781,6 +791,7 @@ tx={--text resources
   elseif(lk.h.r)then
    lk.h.r=false
    lk.p.r=true
+   sfx(12)
    mset(125,2,150)
    return {
     c=8,
@@ -792,12 +803,14 @@ tx={--text resources
  end,
  [247]=function()--lk blue
   if(lk.h.b)then
+   sfx(13)
    return {
     c=7,
     t="oit! that's my blue tool.",
     o={tc.rs}
    }
   elseif(lk.h.r)then
+   sfx(13)
    return {
     c=7,
     t="get that red tool out of here!",
@@ -874,6 +887,7 @@ tx={--text resources
   
   local t="i need "..tostr(5-i).." more bits to open this."
   if(i>=5)then
+   sfx(12)
    t="you open the door"
    fd.o=true--final dungon open
    mset(51,10,46)
@@ -905,9 +919,11 @@ function try_place()
  if(c.m==pl.s)then--pick up
   msetp(c.x,c.y,pl.r)
   pl.n+=1
+  sfx(8)
  elseif(pl.n>0)then--put down
   pl.n-=1
   msetp(c.x,c.y,pl.s)
+  sfx(10)
  else
   return false
  end
@@ -968,6 +984,7 @@ function try_push()
   pu.f=true
   show_dia(176.3)
  end
+ sfx(9)
  return true
 end
 -->8
@@ -990,6 +1007,7 @@ function try_collect()
  if(not fget(m,5))return false
  msetp(x,y,sw.s)
  sw.n+=1
+ sfx(6)
  return true
 end
 
@@ -998,6 +1016,7 @@ function try_cut()
  if(sw.t)return false
  --trigger animation
  sw.t,sw.f,sw.d=true,0,fg.d
+ sfx(5)
  --test effect 
  sw.c=fig_cast(8,4) 
  return c~=nil
@@ -1059,6 +1078,7 @@ function try_col()
  else
   rb.c=l
  end
+ sfx(7)
  return true
 end
 -->8
@@ -1223,6 +1243,7 @@ end
 
 function _update_swg()
  if(not hk.s)return
+ if(abs(hk.dx)%16==1 or abs(hk.dy)%16==1)sfx(11)
  if(abs(hk.dx)>0)then
   local d=sgn(hk.dx)
   fg.x+=d
@@ -1230,7 +1251,7 @@ function _update_swg()
  elseif(abs(hk.dy)>0)then
   local d=sgn(hk.dy)
   fg.y+=d
-  hk.dy-=d  
+  hk.dy-=d
  else
   hk.s=false
  end
@@ -1456,6 +1477,7 @@ function do_reset()
   end
   if(h and mp.n==11)msetp(96,32,197)
   if(h and mp.n==12)msetp(96,32,197) 
+  sfx(9)
  end
  --looker
  if(mp.n==2)then--south
@@ -1700,3 +1722,12 @@ __sfx__
 0108141f106560c6260e6260e6460f64615646176461764623646246462564627666296662d66631656366563a6563d6563f6663f6663a6663a6663a666396563b6563b6663967639666396563a6663d6663d666
 01170000243551c7001d7001c7001a700187001870000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 011700002435030351303510c25100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+010a00003c6140c615001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+011000001833530355000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+011000000c3430c345000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+01100000182450c323000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+01040000226000c6211f611156211f611096000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+011000000c32318245000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+010800000c2340e235000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+01100000182352b235242350000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+01100000000000c251302513025000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
