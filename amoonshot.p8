@@ -1249,7 +1249,14 @@ function try_swing()
  if(b)return false
  --start swing
  hk.s=true
- hk.dx,hk.dy=x-c.x+dx,y-c.y+dy
+ --correct landing position
+ local ay,ax=0,0
+ if(abs(dx)>0)then
+  ay=c.y%8
+ else
+  ax=c.x%8
+ end
+ hk.dx,hk.dy=x-c.x+dx-ax,y-c.y+dy-ay
  return true
 end
 
