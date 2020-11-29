@@ -494,7 +494,7 @@ function move_fig()
  local s=1--ok:1/3--speed
  local m=fig_cast(s,0)
  --workaround 7 south block
- if(mp.n==7 and fg.y>120 and fg.d==4)m=nil
+ if(mp.n==7 and fg.y>118 and fg.d==4)m=nil
  if(m)return false
  if(fg.d==1)fg.x-=s
  if(fg.d==2)fg.x+=s
