@@ -1536,6 +1536,7 @@ fd={
 }
 
 function _init_end()
+ music(-1)
  fd.m=true
  tl.h=150
  tl.s=200
@@ -1560,7 +1561,10 @@ function _update_end()
 	 if(tl.y>60)tl.y-=0.2
 		tl.x=min(tl.x,70)
 		tl.y=max(tl.y,60)
-		if(tl.h<=0)tl.e=true
+		if(tl.h<=0)then
+		 tl.e=true
+		 music(0)
+		end
 	else
 	 tl.x=mid(50,tl.x,70)
 	 tl.y=mid(50,tl.y,70)
