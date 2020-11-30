@@ -22,7 +22,7 @@ __lua__
 --7:is swing hook
 
 function _init()
- --ok:_init_tit()
+ _init_tit()
 end
 
 function _update60()
@@ -272,7 +272,7 @@ ch={--character definitions
  {s=96 ,c= 9,n="cap'n tango"},
  {s=98 ,c= 8,n="baba junior"},
  {s=100,c=12,n="baba seniors"},
- {s=102,c= 4,n="?"},
+ {s=102,c= 4,n="space dog (you)"},
 }
 
 --n:t/l sprite no.
@@ -457,6 +457,8 @@ end
 --l:length in dir to check
 --f:flag to check for
 function fig_cast(l,f)
+ --ok:should clip:
+ --if(f==0)return false
  --fig t/l
  local h=7--sprite height
  local w=6--/width
@@ -492,7 +494,7 @@ function fig_cast(l,f)
 end
 
 function move_fig()
- local s=1--ok:1/3--speed
+ local s=1/3--ok:1/3--speed
  local m=fig_cast(s,0)
  --workaround 7 south block
  if(mp.n==7 and fg.y>118 and fg.d==4)m=nil
@@ -584,16 +586,16 @@ tc={--text constants
 }
 
 ts={
- "thanks for bringing our village back together again, good luck on the moonshot!",
+ "thanks for bringing our village back together again, good luck with the moonshot!",
  "what a landing... that ship looks pretty busted; there's bits scatted throughout this village.",
  "i found one, but- would you help an old man see his wife one more time; i'm too old to walk to her monolith these days.",
- "it is to the east, you'll have to push it along path, press ❎ to pick up and put down logs.",
+ "it is to the east, you'll have to push it along the path, press ❎ to pick up and put down logs.",
  "this used to be such a happy place; maybe you can make it so again as you pick up the pieces.",
  "thanks for bringing my wife to me, it's nice to have her close again. when you've got all the pieces, head north-east.",
  "wow. it's great to have her so close again. here's the piece of your ship.",
  "return the monolith back to where it started?",
  "thanks for cutting the grass; gives the village some respect.",
- "that falling debris scared away all the fish. i picked it up, but you owe me 20 coins. press ❎ to cut down long grass and find coinage.",
+ "the falling debris scared away all the fish. i picked it up, but you owe me 20 coins. press ❎ to cut down long grass and find coinage.",
  "ok, that's 20, you can have your piece.",
  "wow, you found them all!",
  "seeing that trophy reminded me of how happy i was competing, i'm too old now- but maybe i can start helping others...",
@@ -708,9 +710,9 @@ tx={--text resources
    if(not sw.w)then
     t=ts[11]--you have piece now.
     sw.w=true
-   elseif(sw.n>40)then
+   elseif(sw.n>=40)then
     t=ts[12]--"you found them all!"
-   elseif(sw.n>20)then
+   elseif(sw.n>=20)then
     t="ou know, there's 40 coins about, and you only found "..tostr(sw.n).." just saying."
    end
   end
@@ -746,7 +748,7 @@ tx={--text resources
   sfx(12)
   return {
 	  c=8,
-	  t=ts[16],--"got item",
+	  t=ts[18],--"got item",
 	  o={{
 	   t="let's go!",
 	   f=function()
@@ -969,6 +971,7 @@ tx={--text resources
    fd.o=true--final dungon open
    music(-1)
    music(11)--start ending music
+   mp.m=11
    mset(51,10,46)
   end
   return {c=8,t=t}
