@@ -583,6 +583,54 @@ tc={--text constants
  end}
 }
 
+ts={
+ "thanks for bringing our village back together again, good luck on the moonshot!",
+ "what a landing... that ship looks pretty busted; there's bits scatted throughout this village.",
+ "i found one, but- would you help an old man see his wife one more time; i'm too old to walk to her monolith these days.",
+ "it is to the east, you'll have to push it along path, press ❎ to pick up and put down logs.",
+ "this used to be such a happy place; maybe you can make it so again as you pick up the pieces.",
+ "thanks for bringing my wife to me, it's nice to have her close again. when you've got all the pieces, head north-east.",
+ "wow. it's great to have her so close again. here's the piece of your ship.",
+ "return the monolith back to where it started?",
+ "thanks for cutting the grass; gives the village some respect.",
+ "that falling debris scared away all the fish. i picked it up, but you owe me 20 coins. press ❎ to cut down long grass and find coinage.",
+ "ok, that's 20, you can have your piece.",
+ "wow, you found them all!",
+ "seeing that trophy reminded me of how happy i was competing, i'm too old now- but maybe i can start helping others...",
+ "this shard recked my store room, just save my gymnastics trophy and you can get it back",
+ "press ❎ to swing on hooks. you might need to use your sword (❎) to dislodge the stuck hooks.",
+ "wow, this brings back memories... you can have this back.",
+ "so many memories...",
+ "looks like the trophy. i should bring it back.",
+ "ok- let's swap the spade for this hoe and bring that back...",
+ "ok- let's take this hoe to swap it with the spade...",
+ "ok, i'll put the hoe back for now.",
+ "swap complete! and what's this- a piece of your ship!",
+ "hey! you put my hoe back this instant!",
+ "hey! you keep that spade away from my field!",
+ "hmm- you know- this spade isn't all that bad...",
+ "i love my hoe. won't touch a spade. unlike my brothers. if you can steal their spade it'll make my day.",
+ "hey- thanks. together- hoe and spade, us brothers are making good on the land.",
+ "ok - let's swap the hoe for this spade and bring that back...",
+ "ok - let's take this spade and swap it with the hoe...",
+ "ok, i'll put the spade back for now.",
+ "swap complete! and what's this- a piece of your ship!",
+ "oi! get back here with my spade!",
+ "oi! get that hoe outta my field!",
+ "hmm- you know- this hoe isn't all that bad...",
+ "i love my spade. won't touch a hoe. unlike my brother. if you can steal their hoe it'd make our day.",
+ "hey- thanks. together- hoe and spade, us brothers are making good on the land.",
+ "thanks for bringing me and my son back together again.",
+ "you delivered my message? thank you, i shouldn't have waited so long...",
+ "hmm- nothing landed here, but maybe you can help me get through to my son and ask him?",
+ "press ❎ to switch the color changers and clear the way",
+ "we don't always see eye to eye, but he is my dad - thank you.",
+ "my dad sent you? wow, it's been so long since he reached out...",
+ "you can have this- i found it in the garden.",
+ "ok- let's get back to the ship!",
+ "it's time to go- for another moonshot."
+}
+
 tx={--text resources
  [0]={--sprite no.
   c=1,--ch index
@@ -598,38 +646,42 @@ tx={--text resources
   if(fd.o)then
    return{
     c=1,
-    t="good bye from blue."
+    t=ts[1]--end game
    }
   end
-  local t="looks like accident"
-  local o={{t="accident?",f=176.1}}
+  local t=ts[2] --what a landing
+  local o={{t="the village?",f=176.1}}
   if(not pu.f)then
-   t=t.."\nhope wife statue is ok."
-   o[2]={t="wife?!",f=176.2}
+   o[2]={t="the pieces?!",f=176.2}
   else
-   t=t.."\nwife looks good."
+   t=ts[6]--thanks for wife
   end
   o[#o+1]=tc.ok
   return {c=1,t=t,o=o}
  end,
  [176.1]={
   c=1,
-  t="you did splode. find all bits.",
+  t=ts[5]--about village
  },
  [176.2]={
   c=1,
-  t="my wife needs a push.",
+  t=ts[3],--start of statue expl.
+  o={{t="...",f=176.21}}
+ },
+ [176.21]={
+  c=1,
+  t=ts[4]--end of statue expl.
  },
  [176.3]={
   c=1,
-  t="yay. wife good. here's stuff."
+  t=ts[7]--statue into position
  },
  [195]=function()
   if(pu.f)return nil
   if(mp.n<11 or mp.n>12)return nil
   return {
    c=8,
-   t="reset statue?",
+   t=ts[8], --reset statue
    o={tc.no,{
     t="yes",
     f=function()
@@ -644,23 +696,22 @@ tx={--text resources
   if(fd.o)then
    return{
     c=4,
-    t="good bye from yellow."
+    t=ts[9],--"good bye from yellow."
    }
   end
-  local t="hello\n"
   if(sw.n==0)then
-   t=t.."get me coin"
+   t=ts[10]--"get me coin"
   else
-   t=t.."you got "..tostr(sw.n).." coins"
+   t="nice try, but you've only got "..tostr(sw.n).." coins, i want 20"
   end
   if(sw.n>=20)then
    if(not sw.w)then
-    t=t.."\nyou have piece now."
+    t=ts[11]--you have piece now.
     sw.w=true
    elseif(sw.n>40)then
-    t=t.."\nyou found them all!"
+    t=ts[12]--"you found them all!"
    elseif(sw.n>20)then
-    t=t.."\nthere's still more if you want."
+    t="ou know, there's 40 coins about, and you only found "..tostr(sw.n).." just saying."
    end
   end
   return {c=4,t=t}
@@ -671,25 +722,33 @@ tx={--text resources
   if(fd.o)then
    return{
     c=5,
-    t="good bye from item lost."
+    t=ts[13],--"good bye from item lost."
    }
   end
-  local t="i have lost item. find it"
+
+  local t=ts[14]--"i have lost item. find it"
   if(hk.w)then
-   t="thank you for item."
+   t=ts[17] --"thank you for item."
   elseif(hk.c)then
-   t="thank you for item. have your one"
+   t=ts[16] --"thank you for item. have your one"
    hk.w=true
+  else
+   --normal
+   return {c=5,t=t,o={{t="...",f=144.1}}}
   end
   return {c=5,t=t}
  end,
+ [144.1]={
+  c=5,
+  t=ts[15],--expl of swing
+ },
  [180]=function()
   sfx(12)
   return {
 	  c=8,
-	  t="got item",
+	  t=ts[16],--"got item",
 	  o={{
-	   t="woot.",
+	   t="let's go!",
 	   f=function()
 	    hk.c=true
 	    mset(20,14,32)
@@ -709,14 +768,14 @@ tx={--text resources
    mset(36,10,134)
    return{
     c=8,
-    t="put blue where red is and swap."
+    t=ts[19]--"put blue where red is and swap."
    }
   else--first time
    sfx(12)
 	  mset(36,10,152)
 	  return {
 	   c=8,
-	   t="take red thing",
+	   t=ts[20]--"take red thing",
 	  }
 	 end
  end,
@@ -726,7 +785,7 @@ tx={--text resources
 	  mset(36,10,150)
 	  return {
 	   c=8,
-	   t="put back red thing",
+	   t=ts[21]--"put back red thing",
 	  }
   elseif(lk.h.b)then
    lk.h.b=false
@@ -735,7 +794,7 @@ tx={--text resources
    mset(36,10,134)
    return {
     c=8,
-    t="you win red then blue."
+    t=ts[22]--"you win red then blue."
    }
   else
    return nil
@@ -746,31 +805,31 @@ tx={--text resources
    sfx(13)
    return {
     c=6,
-    t="you stole my red tool!",
+    t=ts[23],--"you stole my red tool!",
     o={tc.rs}
    }
   elseif(lk.h.b)then
    sfx(13)
    return {
     c=6,
-    t="get that blue tool away!",
+    t=ts[24],--"get that blue tool away!",
     o={tc.rs}
    }
   elseif(lk.p.r and lk.p.b)then
    return {
     c=6,
-    t="you won and that was something red"
+    t=ts[25]--"you won and that was something red"
    }
   else
    return {
     c=6,
-    t="don't steal my red tool or else",
+    t=ts[26]--"don't steal my red tool or else",
    }
   end
  end,
  [168]={
   c=6,
-  t="good bye from red tools."
+  t=ts[27]--"good bye from red tools."
  },
  [134]=function()--blue tool
   if(lk.p.b)return nil--placed
@@ -782,14 +841,14 @@ tx={--text resources
    mset(125,2,150)
    return {
     c=8,
-    t="put down the red tool and swap it for blue!"
+    t=ts[28]--"put down the red tool and swap it for blue!"
    }
   else--first time
    sfx(12)
    mset(125,2,136)
 	  return {
 	   c=8,
-	   t="take blue thing",
+	   t=ts[29]--"take blue thing",
 	  }
   end
  end,
@@ -799,7 +858,7 @@ tx={--text resources
 	  mset(125,2,134)
 	  return {
 	   c=8,
-	   t="put back blue thing",
+	   t=ts[30]--"put back blue thing",
 	  }
   elseif(lk.h.r)then
    lk.h.r=false
@@ -808,7 +867,7 @@ tx={--text resources
    mset(125,2,150)
    return {
     c=8,
-    t="you win blue then red."
+    t=ts[31]--"you win blue then red."
    }
   else
    return nil
@@ -819,31 +878,31 @@ tx={--text resources
    sfx(13)
    return {
     c=7,
-    t="oit! that's my blue tool.",
+    t=ts[32],--"oit! that's my blue tool.",
     o={tc.rs}
    }
   elseif(lk.h.r)then
    sfx(13)
    return {
     c=7,
-    t="get that red tool out of here!",
+    t=ts[33],--"get that red tool out of here!",
     o={tc.rs}
    }
   elseif(lk.p.r and lk.p.b)then
    return {
     c=7,
-    t="you won and that was something blue"
+    t=ts[34]--"you won and that was something blue"
    }
   else
    return {
     c=7,
-    t="don't steal my blue tool or else",
+    t=ts[35]--"don't steal my blue tool or else",
    }
   end
  end,
  [184]={
   c=7,
-  t="good bye from blue tools."
+  t=ts[36]--"good bye from blue tools."
  },
  
  --father/son
@@ -852,39 +911,44 @@ tx={--text resources
   if(fd.o)then
    return{
     c=3,
-    t="good bye from pink dad."
+    t=ts[37]--"good bye from pink dad."
    }
   end
   if(rb.w)then--won
    return {
     c=3,
-    t="thank you for talk son",
+    t=ts[38],--"thank you for talk son",
    }
   else
    return {
     c=3,
-    t="talk to my son",
+    t=ts[39],--"talk to my son",
+    o={{t="...",f=160.1}}
    }
   end
  end,
+ [160.1]={
+  c=3,
+  t=ts[40]
+ },
  [178]=function()
   --son/black
   if(fd.o)then
    return{
     c=2,
-    t="good bye from balck son."
+    t=ts[41]--"good bye from balck son."
    }
   end
   if(rb.w)then--won
    return {
     c=2,
-    t="thank you for message",
+    t=ts[42],--"thank you for message",
    }
   else
    rb.w=true
    return {
     c=2,
-    t="oh wot a message. i like dad now.",
+    t=ts[42].."\n"..ts[43],
    }
   end
  end,
@@ -898,10 +962,10 @@ tx={--text resources
   if(lk.p.r and lk.p.b)i+=1--lkr
   if(hk.w)i+=1
   
-  local t="i need "..tostr(5-i).." more bits to open this."
+  local t="hmm - i can't head back to the ship until i find "..tostr(5-i).." more parts."
   if(i>=5)then
    sfx(12)
-   t="you open the door"
+   t=ts[44]
    fd.o=true--final dungon open
    music(-1)
    music(11)--start ending music
@@ -913,7 +977,7 @@ tx={--text resources
  --end console
  [215]={
   c=8,
-  t="let us go.",
+  t=ts[45],
   o={{t="sure",f=function()
    _init_end()
   end}},
