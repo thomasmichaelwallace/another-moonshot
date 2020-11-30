@@ -963,7 +963,7 @@ tx={--text resources
   if(rb.w)i+=1--rainbow
   if(lk.p.r and lk.p.b)i+=1--lkr
   if(hk.w)i+=1
-  
+    
   local t="hmm - i can't head back to the ship until i find "..tostr(5-i).." more parts."
   if(i>=5)then
    sfx(12)
@@ -973,6 +973,27 @@ tx={--text resources
    music(11)--start ending music
    mp.m=11
    mset(51,10,46)
+  else
+   fd.c+=1
+   if(fd.c>10)then
+    return {
+     c=8,
+     t=t,
+     o={tc.ok,{
+      t="force it...",
+      f=function()
+       pl.n=2
+       sfx(12)
+				   t=ts[44]
+				   fd.o=true--final dungon open
+				   music(-1)
+				   music(11)--start ending music
+				   mp.m=11
+				   mset(51,10,46)
+      end,
+     }},
+    }
+   end
   end
   return {c=8,t=t}
  end,
@@ -1001,6 +1022,7 @@ function try_place()
  if(c.m==pl.s)then--pick up
   msetp(c.x,c.y,pl.r)
   pl.n+=1
+  if(pl.n>2)pl.n=2--limit for cheat door
   sfx(8)
  elseif(pl.n>0)then--put down
   pl.n-=1
@@ -1603,6 +1625,7 @@ fd={
  m=false,--movie
  e=false,--end mode
  u=false,--sounded
+ c=0,--cheat count
 }
 
 function _init_end()
