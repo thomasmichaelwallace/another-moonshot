@@ -1,21 +1,31 @@
 # Another Moonshot
 
-*A 15 minute "zelda-like".*
+In a desperate moonshot for salvation, you were launched into space. But your ship catches fire and plummets down into an acrimonious little village.
 
-You wake up in the wreckage of a ship; the result of a failed moonshot you can barely remember.
+As you adventure to find all the parts to fix your ship, just maybe you can bring this little village back together again too.
 
-The landing has destroyed a village, already on the brink of societal collapse. By helping to solve the villagers problems, you begin to piece together both the ship and reasons you were in it.
+Are you ready to attempt another moonshot?
 
-After helping heal each villager divisions, you gain another piece of your ship and another ability.
+## Controls
 
-Once you've found five pieces, you realise you have to fire off for another moonshot.
+### General
 
-The last shot is you opening your eyes in the wreckage of this second (?) attempt.
+* up/down/left/right arrows - move/select/push
+* z/x - talk, choose, swish sword, swing, pick-up/put-down log
 
-## Game Off 2020
+### Mechanics
 
-This game is an entry for GitHub's [Game Off 20202 Jam](https://itch.io/jam/game-off-2020).
+* Press [z/x] when near people to start talking, and use [up]/[down] and [z/x] to pick responses.
+* Press [z/x] to swish your sword and cut down long grass and then walk over coins to collect them.
+* Press [z/x] when near a colour changer to cycle to the next colour. Blocks matching that colour will then disappear to open up new paths.
+* Press [z/x] to pickup items like tools and trophies.
+* When holding tools you'll need to sneak past the farmers when they're not looking. Don't forget that fences can be seen through!
+* Press [z/x] when near a hook to swing across. If a hook is stuck (surrounded by red) you'll need to swish your sword ([z/x]) at it first to dislodge it. 
+* Press [z/x] when close to a log to pick it up, and then [z/x] when near water to put it back down again
+* Walk into the monolith to push it along the grey paths or over placed logs. If you get stuck talk to the monolith to reset its position.
 
-**Theme**: Moonshot
+## Notes
 
-**Due**: 01/12/2020 21:37 (this would be '1337' if I lived in PT)
+This game takes about 30 minutes to complete. If you need help, you can see a complete walkthrough here: https://youtu.be/WqGLHOcBFq4.
+
+It was made for the [Game Off 20202 Jam](https://itch.io/jam/game-off-2020) game jam, and ended up being much more work than I had intended! I've tried my best, but no doubt there'll be bugs. If you get into a game breaking bug and need to reset, take heart- you can 'cheat' your way to the final dungeon if you ask the gate hard enough...
