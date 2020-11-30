@@ -704,16 +704,16 @@ tx={--text resources
   if(sw.n==0)then
    t=ts[10]--"get me coin"
   else
-   t="nice try, but you've only got "..tostr(sw.n).." coins, i want 20"
+   t="nice try, but you've only got "..tostr(sw.n).." coins, i want 20!"
   end
   if(sw.n>=20)then
    if(not sw.w)then
     t=ts[11]--you have piece now.
     sw.w=true
    elseif(sw.n>=40)then
-    t=ts[12]--"you found them all!"
+    t=ts[12].."★✽●♥웃🐱♪😐"--"you found them all!"
    elseif(sw.n>=20)then
-    t="ou know, there's 40 coins about, and you only found "..tostr(sw.n).." just saying."
+    t="you know, there's 40 coins about, and you only found "..tostr(sw.n).." just saying."
    end
   end
   return {c=4,t=t}
